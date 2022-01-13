@@ -1,0 +1,48 @@
+<HTML lang='en'>
+<BODY>
+	<DIV id='view'></DIV>
+<SCRIPT>
+	document.addEventListener('keydown', checkForArrows);
+	current_doc = 1;
+	max_docs = 95;
+	function checkForArrows(e) {
+			next = undefined;
+			e = window.event;
+			if(e.keyCode === 37){ disp('previous'); }
+			if(e.keyCode === 39){ disp('next'); }
+			return next;
+		}
+	function disp(doc){
+
+		if( doc === 'previous') {
+			if( current_doc === 1 ){
+				doc = current_doc;
+			} else {
+				current_doc--;
+				doc = current_doc;
+			}
+		};
+		if( doc === 'next') {
+			if( current_doc === max_docs ){
+				doc = current_doc;
+			} else {
+				current_doc++;
+				doc = current_doc;
+			}
+		};
+
+		if(!isNaN(doc)){
+			current_doc=doc;
+		}
+
+		sink = document.querySelector('#view');
+		url='http://192.168.1.50/greatseason1/out-'+String(doc).padStart(3,'0')+'.html';
+		fetch(url)
+			.then(response=>response.text())
+			.then(txt => document.querySelector('#view').innerHTML = txt)
+			.catch(error=>Cconsole.err(error));
+		}
+	disp(current_doc);
+</SCRIPT>
+</BODY>
+</HTML>
